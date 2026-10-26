@@ -6,7 +6,7 @@ function App() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch('http://127.0.0')
+    fetch('http://127.0.0.1:8000/api/test/')
       .then(response => {
         if (!response.ok) throw new Error('Error en la respuesta del servidor')
         return response.json()
