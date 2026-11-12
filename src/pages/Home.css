@@ -162,23 +162,3 @@
     color: #777;
     font-size: 13px;
 }
-
-/* CONNECTION */
-
-.connection-status {
-    padding: 12px;
-    text-align: center;
-    font-size: 12px;
-}
-
-.status-success {
-    color: #16834a;
-}
-
-.status-error {
-    color: #d33;
-}
-
-.status-loading {
-    color: #777;
-}

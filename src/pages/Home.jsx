@@ -17,7 +17,7 @@ function Home() {
                         personalizadas mediante un asistente inteligente.
                     </p>
 
-                    <a href="/login" className="hero-button">
+                    <a href="/iniciar-sesion" className="hero-button">
                         Empezar ahora
                     </a>
 
