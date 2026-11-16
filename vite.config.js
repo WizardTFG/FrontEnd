@@ -1,16 +1,27 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+
   server: {
     host: '0.0.0.0',
     port: 5173,
     strictPort: true,
+
     watch: {
       usePolling: true,
-      interval: 1000,
+      interval: 300,
     },
+
+    hmr: {
+      host: 'localhost',
+      clientPort: 5173,
+    },
+  },
+
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
   },
 })
