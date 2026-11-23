@@ -1,0 +1,57 @@
+.application-wizard {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+}
+
+.application-wizard section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.application-wizard input,
+.application-wizard textarea,
+.application-wizard select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.application-wizard button {
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.wizard-steps {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0;
+    gap: 10px;
+}
+
+.wizard-steps span {
+    padding: 10px;
+    color: #777;
+}
+
+.wizard-steps .active {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.search-results > div,
+.form-field-editor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+.error-message {
+    color: #dc2626;
+}

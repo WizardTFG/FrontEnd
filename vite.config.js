@@ -9,6 +9,9 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
 
+    // Permite los subdominios locales
+    allowedHosts: ['.localhost'],
+
     watch: {
       usePolling: true,
       interval: 300,
