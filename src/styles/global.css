@@ -11,10 +11,11 @@
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
   width: 100%;
-  max-width: none;
-  min-height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  
   text-align: center;
   border: none;
   display: flex;

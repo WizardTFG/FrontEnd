@@ -1,0 +1,270 @@
+.public-application {
+    min-height: 100vh;
+    background: #f4f7fb;
+    color: #243247;
+    font-family: inherit;
+}
+
+.public-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5eaf1;
+    padding: 18px 30px;
+}
+
+.public-header-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.public-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #243f68;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.public-logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #315f9e;
+    color: white;
+    border-radius: 9px;
+    font-size: 23px;
+}
+
+.public-container {
+    width: min(100% - 32px, 850px);
+    margin: 45px auto;
+}
+
+.public-intro {
+    margin-bottom: 30px;
+}
+
+.public-label {
+    color: #3974b9;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.public-intro h1 {
+    margin: 12px 0;
+    color: #243f68;
+    font-size: clamp(28px, 5vw, 38px);
+}
+
+.public-intro p {
+    color: #69788d;
+    line-height: 1.7;
+    font-size: 16px;
+}
+
+.public-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.public-form-section {
+    background: white;
+    border: 1px solid #e5eaf1;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 4px 15px rgba(35, 55, 80, 0.04);
+}
+
+.public-form-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.form-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    background: #edf4fc;
+    color: #315f9e;
+    border-radius: 9px;
+    font-weight: 700;
+}
+
+.public-form-heading h2 {
+    margin: 0;
+    color: #243f68;
+    font-size: 20px;
+}
+
+.public-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.public-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.public-field > label {
+    color: #34445b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.required-mark {
+    color: #dc5353;
+    margin-left: 4px;
+}
+
+.public-field input:not([type="checkbox"]),
+.public-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 15px;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #243247;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.public-field input:focus,
+.public-field textarea:focus {
+    border-color: #477fbd;
+    box-shadow: 0 0 0 3px rgba(71, 127, 189, 0.12);
+}
+
+.public-field textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #53647a;
+    cursor: pointer;
+}
+
+.checkbox-field input {
+    width: 17px;
+    height: 17px;
+    accent-color: #315f9e;
+}
+
+.public-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.public-form-actions button {
+    padding: 13px 28px;
+    background: #315f9e;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.public-form-actions button:hover {
+    background: #244a7d;
+}
+
+.public-empty {
+    padding: 30px;
+    text-align: center;
+    color: #69788d;
+    background: white;
+    border-radius: 12px;
+}
+
+.public-footer {
+    padding: 30px 0;
+    text-align: center;
+    color: #96a1b1;
+    font-size: 12px;
+}
+
+.public-loading,
+.public-error {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f7fb;
+    color: #53647a;
+}
+
+.public-loading {
+    flex-direction: column;
+    gap: 15px;
+}
+
+.loading-spinner {
+    width: 35px;
+    height: 35px;
+    border: 3px solid #dce5f0;
+    border-top-color: #315f9e;
+    border-radius: 50%;
+    animation: public-spin 0.8s linear infinite;
+}
+
+@keyframes public-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.public-error-card {
+    width: min(90% - 32px, 400px);
+    padding: 35px;
+    text-align: center;
+    background: white;
+    border: 1px solid #e5eaf1;
+    border-radius: 14px;
+}
+
+.public-error-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #fff0ed;
+    color: #d45c4d;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.public-error-card h1 {
+    color: #243f68;
+    font-size: 22px;
+}
+
+.public-error-card p {
+    color: #69788d;
+    line-height: 1.6;
+}

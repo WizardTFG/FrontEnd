@@ -1,4 +1,7 @@
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import './Login.css';
+
+import React from 'react';
 
 function Login() {
 
@@ -36,17 +39,31 @@ function Login() {
 
     return (
         <div className="iniciar-sesion">
-            <h1>Iniciar sesión</h1>
-            <p>Accede a tu cuenta o regístrate.</p>
 
-            <GoogleOAuthProvider
-                clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
-            >
-                <GoogleLogin
-                    onSuccess={handleSuccess}
-                    onError={() => alert('Error con Google')}
-                />
-            </GoogleOAuthProvider>
+            <div className="login-card">
+
+                <h1>Iniciar sesión</h1>
+
+                <p>Accede a tu cuenta para continuar.</p>
+
+                <GoogleOAuthProvider
+                    clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+                >
+                    <div className="google-login">
+                        <GoogleLogin
+                            theme="outline"
+                            size="large"
+                            shape="rectangular"
+                            text="continue_with"
+                            width="360"
+                            onSuccess={handleSuccess}
+                            onError={() => alert('Error con Google')}
+                        />
+                    </div>
+                </GoogleOAuthProvider>
+
+            </div>
+
         </div>
     );
 }

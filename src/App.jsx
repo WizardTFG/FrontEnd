@@ -4,19 +4,43 @@ import Header from './templates/header';
 import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
-import Aplicaciones from './pages/Aplicaciones';
+import Aplicaciones from './pages/application/Aplicaciones';
+import CreateApplication from './pages/application/CreateApplication';
 import Perfil from './pages/Perfil';
+import PublicApplication from './pages/application/PublicApplication';
 
+// Rutas públicas
 const pages = {
     '/': Home,
     '/sobre-nosotros': About,
     '/iniciar-sesion': Login,
-    '/mis-aplicaciones': Aplicaciones,
-    '/perfil': Perfil,
+};
+
+// Rutas que requieren iniciar sesión
+const protectedPages = {
+    '/mis-aplicaciones': {
+        component: Aplicaciones,
+    },
+    '/crear-aplicacion': {
+        component: CreateApplication,
+        adminOnly: true,
+    },
+    '/perfil': {
+        component: Perfil,
+    },
 };
 
 function App() {
-    const Page = pages[window.location.pathname];
+    const hostname = window.location.hostname;
+    const pathname = window.location.pathname;
+
+    const isSubdomain = hostname.endsWith('.localhost');
+    const slug = isSubdomain
+        ? hostname.replace('.localhost', '')
+        : null;
+
+    const Page = pages[pathname];
+    const protectedRoute = protectedPages[pathname];
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -38,6 +62,7 @@ function App() {
                 if (!response.ok) {
                     throw new Error('Sesión no válida');
                 }
+
                 return response.json();
             })
             .then(data => setUser(data))
@@ -47,11 +72,44 @@ function App() {
                 localStorage.removeItem('refresh');
             })
             .finally(() => setLoading(false));
-
     }, []);
 
-    if (loading) return <p>Cargando...</p>;
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
 
+    // Aplicación pública cargada desde su subdominio.
+    if (isSubdomain) {
+        return <PublicApplication slug={slug} />;
+    }
+
+    // Rutas protegidas.
+    if (protectedRoute) {
+        if (!user) {
+            window.location.replace('/iniciar-sesion');
+            return null;
+        }
+
+        if (protectedRoute.adminOnly && !user.is_admin) {
+            return (
+                <>
+                    <Header user={user} />
+                    <h1>No tienes permisos para acceder a esta página.</h1>
+                </>
+            );
+        }
+
+        const ProtectedPage = protectedRoute.component;
+
+        return (
+            <>
+                <Header user={user} />
+                <ProtectedPage user={user} />
+            </>
+        );
+    }
+
+    // Rutas públicas.
     return (
         <>
             <Header user={user} />
