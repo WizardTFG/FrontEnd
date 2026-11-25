@@ -1,129 +1,64 @@
+import { GoogleLogin } from '@react-oauth/google';
+import './Login.css';
 import React from 'react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Login from '../pages/Login';
 
-vi.mock('@react-oauth/google', () => ({
-    GoogleOAuthProvider: ({ children }) => <div>{children}</div>,
-    GoogleLogin: ({ onSuccess, onError }) => (
-        <div>
-            <button onClick={() => onSuccess({ credential: 'google-token' })}>
-                Google Login
-            </button>
-            <button onClick={onError}>Error Google</button>
-        </div>
-    ),
-}));
+function Login() {
 
-describe('Login', () => {
-    beforeEach(() => {
-        localStorage.clear();
-        vi.stubGlobal('fetch', vi.fn());
-        vi.spyOn(console, 'error').mockImplementation(() => {});
-        vi.spyOn(window, 'alert').mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-        vi.restoreAllMocks();
-        vi.unstubAllGlobals();
-    });
-
-    it('Muestra el formulario de inicio de sesión', () => {
-        render(<Login />);
-
-        expect(screen.getByRole('heading', {
-            name: 'Iniciar sesión',
-        })).toBeInTheDocument();
-
-        expect(screen.getByText(
-            'Accede a tu cuenta para continuar.'
-        )).toBeInTheDocument();
-
-        expect(screen.getByRole('button', {
-            name: 'Google Login',
-        })).toBeInTheDocument();
-    });
-
-    it('Inicia sesión correctamente y guarda los tokens', async () => {
-        fetch.mockResolvedValue({
-            ok: true,
-            json: async () => ({
-                access: 'access-token',
-                refresh: 'refresh-token',
-            }),
-        });
-
-        render(<Login />);
-
-        fireEvent.click(screen.getByRole('button', {
-            name: 'Google Login',
-        }));
-
-        await waitFor(() => {
-            expect(fetch).toHaveBeenCalledWith(
+    const handleSuccess = async (response) => {
+        try {
+            const result = await fetch(
                 `${import.meta.env.VITE_API_URL}/auth/google/`,
-                expect.objectContaining({
+                {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        credential: 'google-token',
-                    }),
-                })
+                        credential: response.credential
+                    })
+                }
             );
 
-            expect(localStorage.getItem('access')).toBe('access-token');
-            expect(localStorage.getItem('refresh')).toBe('refresh-token');
-        });
-    });
+            const data = await result.json();
 
-    it('Muestra un error si falla la autenticación', async () => {
-        fetch.mockResolvedValue({
-            ok: false,
-            json: async () => ({
-                error: 'Credenciales inválidas',
-            }),
-        });
+            if (!result.ok) {
+                throw new Error(data.error || 'Error al iniciar sesión');
+            }
 
-        render(<Login />);
+            localStorage.setItem('access', data.access);
+            localStorage.setItem('refresh', data.refresh);
 
-        fireEvent.click(screen.getByRole('button', {
-            name: 'Google Login',
-        }));
+            window.location.href = '/';
 
-        await waitFor(() => {
-            expect(window.alert).toHaveBeenCalledWith(
-                'Credenciales inválidas'
-            );
-        });
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        }
+    };
 
-        expect(localStorage.getItem('access')).toBeNull();
-    });
+    return (
+        <div className="iniciar-sesion">
+            <div className="login-card">
 
-    it('Muestra un error si falla la conexión', async () => {
-        fetch.mockRejectedValue(new Error('Error de conexión'));
+                <h1>Iniciar sesión</h1>
 
-        render(<Login />);
+                <p>Accede a tu cuenta para continuar.</p>
 
-        fireEvent.click(screen.getByRole('button', {
-            name: 'Google Login',
-        }));
+                <div className="google-login">
+                    <GoogleLogin
+                        theme="outline"
+                        size="large"
+                        shape="rectangular"
+                        text="continue_with"
+                        width="360"
+                        onSuccess={handleSuccess}
+                        onError={() => alert('Error con Google')}
+                    />
+                </div>
 
-        await waitFor(() => {
-            expect(window.alert).toHaveBeenCalledWith(
-                'Error de conexión'
-            );
-        });
-    });
+            </div>
+        </div>
+    );
+}
 
-    it('Muestra una alerta si Google devuelve un error', () => {
-        render(<Login />);
-
-        fireEvent.click(screen.getByRole('button', {
-            name: 'Error Google',
-        }));
-
-        expect(window.alert).toHaveBeenCalledWith('Error con Google');
-    });
-});
+export default Login;

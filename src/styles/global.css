@@ -10,15 +10,19 @@
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
+  background:
+    radial-gradient(ellipse at 15% 80%, #ddbdf9, transparent 45%),
+    radial-gradient(ellipse at 85% 80%, #d7b7f3, transparent 45%),
+    #f6eefd;
+
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   
-  text-align: center;
   border: none;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }

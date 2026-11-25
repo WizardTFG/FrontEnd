@@ -15,7 +15,7 @@ describe('PublicApplication', () => {
     });
 
     it('Muestra el mensaje de carga', () => {
-        fetch.mockReturnValue(new Promise(() => {}));
+        fetch.mockReturnValue(new Promise(() => {})); 
 
         render(<PublicApplication slug="clinica-demo" />);
 

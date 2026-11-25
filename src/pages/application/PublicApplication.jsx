@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './PublicApplication.css';
-
-import React from 'react';
 
 function PublicApplication({ slug }) {
     const [application, setApplication] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+
+    const [submitting, setSubmitting] = useState(false);
+    const [success, setSuccess] = useState('');
+    const [submitError, setSubmitError] = useState('');
 
     useEffect(() => {
         let active = true;
@@ -30,10 +32,12 @@ function PublicApplication({ slug }) {
                 if (active) {
                     setApplication(data);
                 }
+
             } catch (err) {
                 if (active) {
                     setError(err.message);
                 }
+
             } finally {
                 if (active) {
                     setLoading(false);
@@ -46,7 +50,67 @@ function PublicApplication({ slug }) {
         return () => {
             active = false;
         };
+
     }, [slug]);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        setSubmitting(true);
+        setSuccess('');
+        setSubmitError('');
+
+        const formElement = event.currentTarget;
+        const answers = {};
+
+        application.forms.forEach((form) => {
+            form.fields.forEach((field, index) => {
+                const key = `field-${form.id}-${index}`;
+                const input = formElement.elements.namedItem(key);
+
+                if (field.type === 'checkbox') {
+                    answers[key] = input.checked;
+                } else {
+                    answers[key] = input.value;
+                }
+            });
+        });
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/applications/${slug}/responses/`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ answers })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    typeof data === 'object'
+                        ? JSON.stringify(data)
+                        : 'No se pudieron enviar las respuestas.'
+                );
+            }
+
+            setSuccess(
+                'Las respuestas se han enviado correctamente.'
+            );
+
+            formElement.reset();
+
+        } catch (err) {
+            setSubmitError(err.message);
+
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -75,6 +139,7 @@ function PublicApplication({ slug }) {
 
     return (
         <main className="public-application">
+
             <header className="public-header">
                 <div className="public-header-content">
                     <div className="public-logo">
@@ -85,6 +150,7 @@ function PublicApplication({ slug }) {
             </header>
 
             <div className="public-container">
+
                 <section className="public-intro">
                     <span className="public-label">
                         FORMULARIO
@@ -99,17 +165,30 @@ function PublicApplication({ slug }) {
 
                 <form
                     className="public-form"
-                    onSubmit={(event) => {
-                        event.preventDefault();
-                        alert('El envío de respuestas todavía no está implementado.');
-                    }}
+                    onSubmit={handleSubmit}
                 >
+
+                    {success && (
+                        <p role="status" className="success-message">
+                            {success}
+                        </p>
+                    )}
+
+                    {submitError && (
+                        <p role="alert" className="error-message">
+                            {submitError}
+                        </p>
+                    )}
+
                     {application.forms?.length > 0 ? (
+
                         application.forms.map((form, formIndex) => (
+
                             <section
                                 className="public-form-section"
                                 key={form.id}
                             >
+
                                 <div className="public-form-heading">
                                     <span className="form-number">
                                         {String(formIndex + 1).padStart(2, '0')}
@@ -119,77 +198,105 @@ function PublicApplication({ slug }) {
                                 </div>
 
                                 <div className="public-fields">
-                                    {form.fields?.map((field, index) => (
-                                        <div
-                                            className="public-field"
-                                            key={index}
-                                        >
-                                            <label htmlFor={`field-${form.id}-${index}`}>
-                                                {field.label || 'Campo sin nombre'}
 
-                                                {field.required && (
-                                                    <span className="required-mark">
-                                                        *
-                                                    </span>
-                                                )}
-                                            </label>
+                                    {form.fields?.map((field, index) => {
 
-                                            {field.type === 'textarea' ? (
-                                                <textarea
-                                                    id={`field-${form.id}-${index}`}
-                                                    name={`field-${form.id}-${index}`}
-                                                    required={field.required}
-                                                    placeholder="Escribe tu respuesta..."
-                                                    rows="4"
-                                                />
-                                            ) : field.type === 'checkbox' ? (
-                                                <label className="checkbox-field">
-                                                    <input
-                                                        id={`field-${form.id}-${index}`}
-                                                        name={`field-${form.id}-${index}`}
-                                                        type="checkbox"
-                                                        required={field.required}
-                                                    />
-                                                    <span>
-                                                        {field.label || 'Sí'}
-                                                    </span>
+                                        const fieldId = `field-${form.id}-${index}`;
+
+                                        return (
+                                            <div
+                                                className="public-field"
+                                                key={fieldId}
+                                            >
+
+                                                <label htmlFor={fieldId}>
+                                                    {field.label || 'Campo sin nombre'}
+
+                                                    {field.required && (
+                                                        <span className="required-mark">
+                                                            *
+                                                        </span>
+                                                    )}
                                                 </label>
-                                            ) : (
-                                                <input
-                                                    id={`field-${form.id}-${index}`}
-                                                    name={`field-${form.id}-${index}`}
-                                                    type={
-                                                        ['text', 'number', 'date'].includes(field.type)
-                                                            ? field.type
-                                                            : 'text'
-                                                    }
-                                                    required={field.required}
-                                                    placeholder="Escribe tu respuesta..."
-                                                />
-                                            )}
-                                        </div>
-                                    ))}
+
+                                                {field.type === 'textarea' ? (
+
+                                                    <textarea
+                                                        id={fieldId}
+                                                        name={fieldId}
+                                                        required={field.required}
+                                                        placeholder="Escribe tu respuesta..."
+                                                        rows="4"
+                                                    />
+
+                                                ) : field.type === 'checkbox' ? (
+
+                                                    <label className="checkbox-field">
+                                                        <input
+                                                            id={fieldId}
+                                                            name={fieldId}
+                                                            type="checkbox"
+                                                            required={field.required}
+                                                        />
+
+                                                        <span>
+                                                            {field.label || 'Sí'}
+                                                        </span>
+                                                    </label>
+
+                                                ) : (
+
+                                                    <input
+                                                        id={fieldId}
+                                                        name={fieldId}
+                                                        type={
+                                                            ['text', 'number', 'date'].includes(field.type)
+                                                                ? field.type
+                                                                : 'text'
+                                                        }
+                                                        required={field.required}
+                                                        placeholder="Escribe tu respuesta..."
+                                                    />
+
+                                                )}
+
+                                            </div>
+                                        );
+                                    })}
+
                                 </div>
                             </section>
                         ))
+
                     ) : (
+
                         <p className="public-empty">
                             Esta aplicación todavía no tiene formularios.
                         </p>
+
                     )}
 
                     {application.forms?.length > 0 && (
                         <div className="public-form-actions">
-                            <button type="submit">
-                                Enviar respuestas
+
+                            <button
+                                type="submit"
+                                disabled={submitting}
+                            >
+                                {submitting
+                                    ? 'Enviando...'
+                                    : 'Enviar respuestas'}
                             </button>
+
                         </div>
                     )}
+
                 </form>
 
                 <footer className="public-footer">
                     <p>Formulario gestionado con WEBGEN</p>
                 </footer>
+
             </div>
         </main>
     );

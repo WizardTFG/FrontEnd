@@ -9,7 +9,7 @@ function Home() {
                     <h1>
                         Crea aplicaciones web
                         <br />
-                        de una forma nueva
+                        de una nueva forma
                     </h1>
 
                     <p className="hero-description">
@@ -24,69 +24,87 @@ function Home() {
                     <p className="hero-note">
                         Crea y gestiona tus propias aplicaciones web.
                     </p>
+                </section>
 
-                    {/* Vista ilustrativa de la plataforma */}
-                    <div className="preview">
+                <section className="home">
+                    <div className="home-header">
+                        <h2>Cómo crear una aplicación web</h2>
 
-                        <div className="preview-sidebar">
-                            <h3>Panel de control</h3>
-                            <p>Mis aplicaciones</p>
-                            <p>Crear aplicación</p>
-                            <p>Formularios</p>
-                            <p>Indicadores</p>
+                        <p>
+                            Con WEBGEN puedes crear aplicaciones web personalizadas
+                            de forma sencilla mediante nuestro asistente inteligente.
+                        </p>
+                    </div>
+
+                    <div className="home-steps">
+
+                        <div className="home-step">
+                            <span className="step-number">(01)</span>
+                            <div>
+                                <h3>Crea tu cuenta gratuitamente.</h3>
+                                <p>
+                                    Regístrate en WEBGEN para comenzar a crear y gestionar
+                                    tus propias aplicaciones web.
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="preview-content">
-
-                            <div className="preview-topbar">
-                                <strong>Mi aplicación web</strong>
-                                <span>Administrador</span>
+                        <div className="home-step">
+                            <span className="step-number">(02)</span>
+                            <div>
+                                <h3>Pide el rol adecuado.</h3>
+                                <p>
+                                    Como clínico puedes hacer uso de tus webs asignadas, pero
+                                    para crear, pide el rol de administrador des del perfil.
+                                </p>
                             </div>
+                        </div>
 
-                            <div className="preview-body">
+                        <div className="home-step">
+                            <span className="step-number">(03)</span>
+                            <div>
+                                <h3>Personaliza tu aplicación.</h3>
+                                <p>
+                                    Ajusta el diseño, añade formularios y adapta
+                                    la aplicación web a tus necesidades.
+                                </p>
+                            </div>
+                        </div>
 
-                                <div className="preview-text">
-                                    <h2>
-                                        Gestiona tus
-                                        aplicaciones
-                                    </h2>
+                        <div className="home-step">
+                            <span className="step-number">(04)</span>
+                            <div>
+                                <h3>Crea tu aplicación.</h3>
+                                <p>
+                                    Nuestro asistente inteligente transformará tus
+                                    indicaciones en una aplicación web.
+                                </p>
+                            </div>
+                        </div>
 
-                                    <p>
-                                        Configura formularios,
-                                        integra modelos predictivos
-                                        y visualiza resultados.
-                                    </p>
+                        <div className="home-step">
+                            <span className="step-number">(05)</span>
+                            <div>
+                                <h3>Revisa y prueba tu proyecto.</h3>
+                                <p>
+                                    Comprueba que todo funciona correctamente y realiza
+                                    los cambios necesarios antes de publicarlo.
+                                </p>
+                            </div>
+                        </div>
 
-                                    <button>
-                                        Crear aplicación
-                                    </button>
-                                </div>
-
-                                <div className="preview-cards">
-                                    <div className="preview-card">
-                                        <span>01</span>
-                                        <h3>Formularios</h3>
-                                        <p>Configuración dinámica</p>
-                                    </div>
-
-                                    <div className="preview-card">
-                                        <span>02</span>
-                                        <h3>Indicadores</h3>
-                                        <p>Gestión y visualización</p>
-                                    </div>
-
-                                    <div className="preview-card">
-                                        <span>03</span>
-                                        <h3>Predicciones</h3>
-                                        <p>Integración de modelos</p>
-                                    </div>
-                                </div>
-
+                        <div className="home-step">
+                            <span className="step-number">(06)</span>
+                            <div>
+                                <h3>Despliega tu aplicación web.</h3>
+                                <p>
+                                    Publica tu proyecto para que otras personas puedan
+                                    acceder y utilizar tu aplicación.
+                                </p>
                             </div>
                         </div>
 
                     </div>
-
                 </section>
             </main>
         </div>
